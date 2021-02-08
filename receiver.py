@@ -20,10 +20,13 @@ async def handle_data(websocket, path):
     print('connected')
     last_run = datetime.now()
     async for message in websocket:
-        print(max([int(x) for x in message.split(',')]))
-        if (datetime.now() - last_run).total_seconds() > 10:
-            hide()
+        val = max([int(x) for x in message.split(',')])
+        now = datetime.now()
+        diff = (now - last_run).total_seconds()
+        print(now, diff, val)
+        if val > 1600 and diff > 10:
             last_run = datetime.now()
+            hide()
 
 if __name__ == "__main__":
     start_server = websockets.serve(handle_data, "0.0.0.0", 4457)
